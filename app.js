@@ -3,19 +3,23 @@ const app = express();
 const port = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 app.use(express.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
+const path = require('path');
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.static("public"));
 var methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 const allRoutes = require("./routes/allRoutes");
 const addUserRoute = require("./routes/addUser");
 
-app.use(express.json())
+app.use(express.json());
 // cookie-parser
-var cookieParser = require('cookie-parser')
-app.use(cookieParser())
+var cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
-require('dotenv').config()
+require("dotenv").config();
+
 
 // Auto refresh
 const path = require("path");
@@ -33,9 +37,9 @@ liveReloadServer.server.once("connection", () => {
 });
 
 mongoose
-.connect(
-  "mongodb+srv://jooelfiki23:99YfqwzWVZbY3MX1@cluster0.02q7e.mongodb.net/all-data?retryWrites=true&w=majority&appName=Cluster0"
-)
+  .connect(
+    "mongodb+srv://jooelfiki23:99YfqwzWVZbY3MX1@cluster0.02q7e.mongodb.net/all-data?retryWrites=true&w=majority&appName=Cluster0"
+  )
   .then(() => {
     app.listen(port, () => {
       console.log(`http://localhost:${port}/`);
@@ -45,5 +49,10 @@ mongoose
     console.log(err);
   });
 
+
 app.use(allRoutes);
-app.use( "/user/add.html",addUserRoute);
+app.use("/user/add.html", addUserRoute);
+
+module.exports = (req, res) => {
+  app(req, res);
+};
