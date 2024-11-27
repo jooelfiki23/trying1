@@ -6,7 +6,7 @@ const { check, validationResult } = require("express-validator");
 
 
 const get_welcome = (req, res) => {
-  res.render("welcome");
+  res.render('welcome');
 };
 
 const get_signout = (req, res) => {
